@@ -73,15 +73,15 @@ human-in-the-loop interrupt/resume via checkpointing.
                                            +-> :hold               (:hard? true)
 ```
 
-- `src/chiefs/store.cljc` — `Store` protocol + `MemStore`:
+- `src/chiefs/store.kotoba` — `Store` protocol + `MemStore`:
   registered communities, committed records, an append-only audit ledger.
-- `src/chiefs/advisor.cljc` — `Advisor` protocol; `mock-advisor`
+- `src/chiefs/advisor.kotoba` — `Advisor` protocol; `mock-advisor`
   (deterministic, default) proposes an administrative operation from a
   request; `llm-advisor` wraps a `langchain.model/ChatModel` — either
   way the advisor only ever produces a `:propose`-effect proposal,
   never a committed record, and LLM parse failures always yield
   `confidence 0.0` (forces escalation, never fabricated confidence).
-- `src/chiefs/governor.cljc` — `ChiefsGovernor/check`: a pure
+- `src/chiefs/governor.kotoba` — `ChiefsGovernor/check`: a pure
   function, wired as its own `:govern` node. Hard invariants
   (unregistered community, a proposal whose `:effect` isn't `:propose`,
   any proposal to issue a customary ruling or resolve a dispute directly)
@@ -91,7 +91,7 @@ human-in-the-loop interrupt/resume via checkpointing.
   checkpoints and only resumes on explicit human approval
   (`actor/approve!`), matching the README's scope statement that
   dispute escalation always requires human sign-off.
-- `src/chiefs/actor.cljc` — `build-graph`, `run-request!`,
+- `src/chiefs/actor.kotoba` — `build-graph`, `run-request!`,
   `approve!`: the `langgraph.graph/state-graph` wiring itself.
 
 ```bash
