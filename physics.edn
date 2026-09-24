@@ -1,0 +1,33 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": an administrative robot performs correspondence
+;; drafting, meeting scheduling and record-keeping for traditional chiefs and
+;; heads of villages (ISCO 1113). Its physical work is the community record:
+;; carrying the register ledgers along the village path to the meeting
+;; place, and keeping them in a store room that heats up in the afternoon.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-1113"
+ :cases
+ [{:id :ledger-carry-to-meeting
+   :kind :transport
+   :procedure "robot carries the community register ledgers and the meeting minute book 300 m along an unpaved village path to the meeting place"
+   :params {:mass-kg 50.0 :payload-kg 12.0 :distance-m 300.0 :v-max-mps 1.0 :a-max-mps2 0.5
+            :brake-decel-mps2 0.8 :drive-force-n 120.0 :cog-height-m 0.50 :support-half-length-m 0.30}
+   :sweep {:param :crr :values [0.02 0.05 0.08 0.12 0.16 0.19]}
+   :quantity :cycle-time-s
+   :limit {:max 330.0 :basis "estimate: the ledgers must reach the meeting place within about 5.5 minutes of being called for"}
+   :boundary {:lo 0.01 :hi 0.25}}
+  {:id :record-trunk-afternoon-heat
+   :kind :thermal
+   :procedure "register ledgers are kept in a plywood record trunk in a store room that heats to 42 C over a six-hour afternoon"
+   :params {:conductivity-w-mk 0.13 :density-kg-m3 550.0 :specific-heat-j-kgk 1600.0
+            :t0-c 24.0 :t-hot-c 42.0 :h-front-w-m2k 8.0 :t-back-ambient-c 24.0 :h-back-w-m2k 2.0
+            :threshold-c 32.0 :duration-s 21600.0 :nodes 21}
+   :sweep {:param :thickness-m :values [0.012 0.025 0.035 0.050 0.070]}
+   :quantity :final-back-c
+   :limit {:max 32.0 :basis "estimate: keep the paper face below ~32 C to slow heat ageing and mould growth in a humid store"}
+   :boundary {:lo 0.005 :hi 0.08}}]}
