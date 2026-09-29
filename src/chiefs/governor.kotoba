@@ -4,7 +4,7 @@
   `chiefs.actor`'s StateGraph, downstream of `:advise` — the Advisor has no
   notion of community provenance or dispute escalation risk, so this MUST be a
   separate system able to reject a proposal (itonami actor pattern, per
-  ADR-2607011000 / CLAUDE.md Actors section).
+  ADR-2607011000 / AGENTS.md Actors section).
 
   CRITICAL SCOPE ENFORCEMENT: This governor enforces the binding scope
   constraint that this actor NEVER issues customary rulings, land-allocation
